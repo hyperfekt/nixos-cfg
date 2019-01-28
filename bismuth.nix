@@ -29,12 +29,20 @@ in
       ./git.nix
       # Install Spotify.
       ./spotify.nix
+      # Use KDE desktop environment.
+      ./kde.nix
+      # Make Ubuntu the default font.
+      ./ubuntu-font.nix
+      # Enable aptX Bluetooth.
+      ./bluetooth.nix
     ];
 
   system.autoUpgrade.enable = true;
 
   nix.autoOptimiseStore = true;
   nix.gc.automatic = true;
+  nix.buildCores = 0; # redundant in 19.03
+  nix.maxJobs = 16;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -43,47 +51,8 @@ in
   networking.hostName = "bismuth"; # Define your hostname.
   networking.networkmanager.enable = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable touchpad support.
-  services.xserver.libinput.enable = true;
-
-  # Enable the KDE Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5 = {
-    enable = true;
-    enableQt4Support = false;
-  };
+  services.printing.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.adrian = {
@@ -100,6 +69,7 @@ in
     firefox
     unstable.pijul
     nix-prefetch-git
+    alacritty
   ];
 
   # This value determines the NixOS release with which your system is to be
