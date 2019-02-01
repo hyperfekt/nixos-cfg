@@ -31,10 +31,16 @@ in
       ./spotify.nix
       # Use KDE desktop environment.
       ./kde.nix
+      # Use the Sway window manager.
+      ./sway.nix
       # Make Ubuntu the default font.
       ./ubuntu-font.nix
       # Enable aptX Bluetooth.
       ./bluetooth.nix
+      # Activate powersaving measures.
+      ./powersave.nix
+      # Enable hardware video decoding acceleration for Intel graphics.
+      ./video-acceleration.nix
     ];
 
   system.autoUpgrade.enable = true;
@@ -51,11 +57,14 @@ in
   networking.hostName = "bismuth"; # Define your hostname.
   networking.networkmanager.enable = true;
 
+  # Enable hard drive active protection system.
+  services.hdapsd.enable = true;
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.adrian = {
+  users.users.${user} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "configuration" ];
     hashedPassword = "$6$64iOISRiRDrN$rJIV0nCsnxZ4kCFHQSq7vAc.3EX8JJ6Q22YFGrCLLNoBiOk3B4WW3Y4AUaxKW1JhmuCt7cHkxGhJY8eomKc0k0";
@@ -70,6 +79,9 @@ in
     unstable.pijul
     nix-prefetch-git
     alacritty
+    ripgrep
+    youtube-dl
+    vlc
   ];
 
   # This value determines the NixOS release with which your system is to be

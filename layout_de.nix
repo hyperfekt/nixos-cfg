@@ -9,4 +9,9 @@
   
   services.xserver.layout = "de";
   services.xserver.xkbOptions = "eurosign:e";
+
+  programs.sway-beta.extraSessionCommands = ''
+      export XKB_DEFAULT_LAYOUT=de
+      export XKB_DEFAULT_OPTIONS=eurosign:e
+  '';
 }
