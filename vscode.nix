@@ -1,7 +1,7 @@
-{ user, pkgs, lib, ... }:
+{ user, pkgs, unstable, lib, ... }:
 let
   idToDrv = id:
-    pkgs.vscode-utils.buildVscodeExtension {
+    unstable.vscode-utils.buildVscodeExtension {
       name = id;
       src = getVsix id;
       vscodeExtUniqueId = id;
@@ -18,8 +18,8 @@ let
       };
   
   
-  custom-vscode = pkgs.vscode-with-extensions.override {
-      vscodeExtensions = with pkgs.vscode-extensions; [
+  custom-vscode = unstable.vscode-with-extensions.override {
+      vscodeExtensions = with unstable.vscode-extensions; [
           bbenoist.Nix
         ] ++ (map idToDrv [
           "rust-lang.rust"
@@ -37,6 +37,7 @@ in
       userSettings = {
         "update.channel" = "none";
         "files.insertFinalNewline" = true;
+        "telemetry.enableTelemetry" = false;
         "[nix]"."editor.tabSize" = 2;
       };
     };
