@@ -37,7 +37,7 @@ in
       userSettings = {
         "update.channel" = "none";
         "files.insertFinalNewline" = true;
-        "telemetry.enableTelemetry" = false;
+        "files.trimTrailingWhitespace" = true;
         "[nix]"."editor.tabSize" = 2;
       };
     };
