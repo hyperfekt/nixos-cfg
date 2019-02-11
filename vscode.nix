@@ -36,8 +36,11 @@ in
 
       userSettings = {
         "update.channel" = "none";
+        "extensions.autoupdate" = false;
         "files.insertFinalNewline" = true;
         "files.trimTrailingWhitespace" = true;
+        "telemetry.enableTelemetry" = false;
+        "telemetry.enableCrashReporter" = false;
         "[nix]"."editor.tabSize" = 2;
       };
     };
