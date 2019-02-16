@@ -66,11 +66,9 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "configuration" ];
+    extraGroups = [ "wheel" "networkmanager" ];
     hashedPassword = "$6$64iOISRiRDrN$rJIV0nCsnxZ4kCFHQSq7vAc.3EX8JJ6Q22YFGrCLLNoBiOk3B4WW3Y4AUaxKW1JhmuCt7cHkxGhJY8eomKc0k0";
   };
-
-  users.groups.configuration = {};
 
   users.mutableUsers = false;
 
