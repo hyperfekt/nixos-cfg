@@ -81,6 +81,7 @@ in
     youtube-dl
     vlc
     lsof
+    /* polyglot */ (callPackage (builtins.fetchurl https://raw.githubusercontent.com/hyperfekt/nixpkgs/init_polyglot/pkgs/development/tools/misc/polyglot/default.nix) {})
   ];
 
   # This value determines the NixOS release with which your system is to be
