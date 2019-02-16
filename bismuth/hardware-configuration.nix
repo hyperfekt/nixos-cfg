@@ -13,12 +13,12 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/sda1:/dev/sdb1";
+    { device = "/dev/disk/by-partlabel/nixos-fast:/dev/disk/by-partlabel/nixos-slow";
       fsType = "bcachefs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/E043-94D7";
+    { device = "/dev/disk/by-partlabel/boot";
       fsType = "vfat";
     };
 
