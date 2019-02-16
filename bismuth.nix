@@ -82,6 +82,7 @@ in
     ripgrep
     youtube-dl
     vlc
+    lsof
   ];
 
   # This value determines the NixOS release with which your system is to be
