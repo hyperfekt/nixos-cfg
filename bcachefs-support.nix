@@ -2,12 +2,12 @@
 let
   fetchimport = args: ((import <nixos/nixpkgs> {config={};}).fetchurl args).outPath;
   kernel = unstable.linux_testing_bcachefs.override { argsOverride = {
-    version = "4.20.2019.02.09";
+    version = "4.20.2019.02.15";
     modDirVersion = "4.20.0";
     src = pkgs.fetchgit {
       url = "https://evilpiepirate.org/git/bcachefs.git";
-      rev = "09a546543006b60d44c4c51e7b40cd3ec7837a5e";
-      sha256 = "0p187vp9df0nnhawql0f2bj2sdim0f2b424106d41yxc8ayhz0d9";
+      rev = "4d3f874ffb5df28021e148c5238ed16cf5a69d36";
+      sha256 = "0k0s5sclm4kny7l6csq0izfiaq5iia7z5n88skdhlan514gd2pzq";
     };
   }; };
   kernelPackages = pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor kernel);
