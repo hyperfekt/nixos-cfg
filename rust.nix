@@ -9,9 +9,10 @@ let
   };
 
   rust-mozilla = import "${nixpkgs-mozilla}/rust-overlay.nix";
+  rust-src-mozilla = import "${nixpkgs-mozilla}/rust-src-overlay.nix";
 in
 {
-  nixpkgs.overlays = [ rust-mozilla ];
+  nixpkgs.overlays = [ rust-mozilla rust-src-mozilla ];
 
   environment.systemPackages = [
     pkgs.latest.rustChannels.nightly.rust
