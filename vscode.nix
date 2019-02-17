@@ -16,8 +16,7 @@ let
         url = "https://${publisher}.gallery.vsassets.io/_apis/public/gallery/publisher/${publisher}/extension/${name}/latest/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage";
         name = "${publisher}-${name}.zip";
       };
-  
-  
+
   custom-vscode = unstable.vscode-with-extensions.override {
       vscodeExtensions = with unstable.vscode-extensions; [
           bbenoist.Nix
@@ -39,6 +38,10 @@ in
         "extensions.autoupdate" = false;
         "files.insertFinalNewline" = true;
         "files.trimTrailingWhitespace" = true;
+        "[plaintext]" = {
+          "files.insertFinalNewline" = false;
+          "files.trimTrailingWhitespace" = false;
+        };
         "telemetry.enableTelemetry" = false;
         "telemetry.enableCrashReporter" = false;
         "[nix]"."editor.tabSize" = 2;
