@@ -86,6 +86,7 @@ in
     unstable.youtube-dl
     vlc
     lsof
+    unstable.nox
     /* polyglot */ (callPackage (builtins.fetchurl https://raw.githubusercontent.com/hyperfekt/nixpkgs/init_polyglot/pkgs/development/tools/misc/polyglot/default.nix) {})
   ];
 
