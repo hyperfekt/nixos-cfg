@@ -3,6 +3,7 @@ let
   user = "adrian";
 
   unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
+
 in
 {
   _module.args.user = user;
@@ -41,6 +42,8 @@ in
       ./powersave.nix
       # Enable hardware video decoding acceleration for Intel graphics.
       ./video-acceleration.nix
+      # Enable SSD-specific tweaks.
+      ./ssd.nix
     ];
 
   system.autoUpgrade.enable = true;
