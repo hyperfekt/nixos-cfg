@@ -44,6 +44,8 @@ in
       ./video-acceleration.nix
       # Enable SSD-specific tweaks.
       ./ssd.nix
+      # Compress memory in RAM.
+      ./zram.nix
     ];
 
   system.autoUpgrade.enable = true;
