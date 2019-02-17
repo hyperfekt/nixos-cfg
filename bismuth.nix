@@ -83,7 +83,7 @@ in
     nix-prefetch-git
     alacritty
     ripgrep
-    youtube-dl
+    unstable.youtube-dl
     vlc
     lsof
     /* polyglot */ (callPackage (builtins.fetchurl https://raw.githubusercontent.com/hyperfekt/nixpkgs/init_polyglot/pkgs/development/tools/misc/polyglot/default.nix) {})
