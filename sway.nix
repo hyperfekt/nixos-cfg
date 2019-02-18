@@ -3,6 +3,7 @@
   imports = [ <nixos-unstable/nixos/modules/programs/sway-beta.nix> ];
 
   programs.sway-beta = {
+    enable = true;
     package = unstable.sway-beta;
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland

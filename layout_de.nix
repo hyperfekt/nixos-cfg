@@ -6,7 +6,7 @@
   };
 
   time.timeZone = "Europe/Berlin";
-  
+
   services.xserver.layout = "de";
   services.xserver.xkbOptions = "eurosign:e";
 
