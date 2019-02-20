@@ -2,12 +2,12 @@
 let
   fetchimport = args: ((import <nixos/nixpkgs> {config={};}).fetchurl args).outPath;
   kernel = unstable.linux_testing_bcachefs.override { argsOverride = {
-    version = "4.20.2019.02.15";
+    version = "4.20.2019.02.20";
     modDirVersion = "4.20.0";
     src = pkgs.fetchgit {
       url = "https://evilpiepirate.org/git/bcachefs.git";
-      rev = "4d3f874ffb5df28021e148c5238ed16cf5a69d36";
-      sha256 = "0k0s5sclm4kny7l6csq0izfiaq5iia7z5n88skdhlan514gd2pzq";
+      rev = "ea43593a9d07594e8a14eb44f9373c238a981612";
+      sha256 = "0jiwb7wxhx6hnlv15rj4hcljrr44cddm5hb8sf4bfhln70zw5apf";
     };
   }; };
   kernelPackages = pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor kernel);
@@ -36,4 +36,11 @@ in
     boot.kernelPackages = pkgs.lib.mkForce kernelPackages;
     boot.zfs.enableUnstable = true;
     boot.supportedFilesystems = [ "bcachefs" ];
+    boot.kernelPatches = [ {
+      name = "bcachefs-acl";
+      patch = null;
+      extraConfig = ''
+        BCACHEFS_POSIX_ACL y
+      '';
+    } ];
   }
