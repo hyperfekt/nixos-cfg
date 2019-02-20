@@ -35,11 +35,13 @@ in
 
       userSettings = {
         "update.channel" = "none";
-        "extensions.autoupdate" = false;
+        "extensions.autoUpdate" = false;
         "files.insertFinalNewline" = true;
+        "editor.renderFinalNewline" = false;
         "files.trimTrailingWhitespace" = true;
         "[plaintext]" = {
           "files.insertFinalNewline" = false;
+          "editor.renderFinalNewline" = true;
           "files.trimTrailingWhitespace" = false;
         };
         "telemetry.enableTelemetry" = false;
