@@ -10,10 +10,14 @@ in
   _module.args.unstable = unstable;
 
   imports =
-    [ # Include the results of the hardware scan.
+    [ # Add custom modules.
+      ./modules/all-modules.nix
+      # Include the results of the hardware scan.
       ./bismuth/hardware-configuration.nix
       # Enable bcachefs root support.
       ./bcachefs-support.nix
+      # Backups!
+      ./backup.nix
       # Pull in Mozilla Rust Overlay and install Rust & Carnix.
       ./rust.nix
       # Set German keyboard layout.
