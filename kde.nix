@@ -13,7 +13,7 @@
     enableQt4Support = false;
   };
 
-  # see #20776
+  # see nixos/nixpkgs#20776
   system.userActivationScripts.updateStartMenu = {
     text = ''
       ${pkgs.libsForQt5.kservice}/bin/kbuildsycoca5

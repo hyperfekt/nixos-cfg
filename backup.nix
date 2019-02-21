@@ -22,40 +22,43 @@ in
 
   users.users = mapAttrs' (n: v: nameValuePair v.user { isSystemUser = true; }) backupsWithUser;
 
-  system.activationScripts.backupFilePermissions = {
-    text =
-      let
-        setfacl = "${pkgs.acl.bin}/bin/setfacl";
-        # make sure to run before any other setfacl calls as they are destructive
-        makeAccessible = entity: target: ''
-          current=${target}
-          while current="$(dirname "$current")"; do
-            ${setfacl} --mask -m ${entity}:x "$current" || break
-            if [ "$current" = "/" ]; then
-              break
-            fi
-          done
-        '';
-      in
-        concatStringsSep "\n" (
-          flatten (
-            mapAttrsToList (n: v: [ ''
-                # remove all permissions for this user
-                ${setfacl} -x d:u:${v.user},u:${v.user} /*
-                '' ] ++ [
+  # necessary to do as prestart because a default set with X would make newly created files executable
+  # and because some applications change the ACL mask upon saving
+  systemd.services =
+    let
+      # using '!' for elevated privileges
+      setfacl = "${pkgs.acl.bin}/bin/setfacl";
+      # make sure to run before any other setfacl calls as they are destructive
+      makeAccessible = entity: target: ''
+        current=${target}
+        while current="$(dirname "$current")"; do
+          ${setfacl} --mask -m ${entity}:x "$current" || break
+          if [ "$current" = "/" ]; then
+            break
+          fi
+        done
+      '';
+    in
+      mapAttrs' (n: v:
+        nameValuePair "restic-backups-${n}" {
+          # deprecated in 19.09, see nixos/nixpkgs#53852
+          serviceConfig.PermissionsStartOnly = true;
+          preStart =
+            concatStringsSep "\n" (
+              flatten ( [
                 (makeAccessible "u:${v.user}" v.passwordFile) ''
                 ${setfacl} --mask -m u:${v.user}:r ${v.passwordFile}
                 '' ] ++ optional (!(isNull v.s3CredentialsFile)) [
                   (makeAccessible "u:${v.user}" v.s3CredentialsFile) ''
                   ${setfacl} --mask -m u:${v.user}:r ${v.s3CredentialsFile}
                 '' ] ++
-              (map (path: ''
-                # TODO: for some reason some files end up with execute bit???
-                ${setfacl} --mask -Rm d:u:${v.user}:rX,u:${v.user}:rX ${path}
-              '') v.paths)
-            ) backupsWithUser
-          )
-        );
-    deps = [];
-  };
+                (map (path: ''
+                  ${setfacl} --mask -Rm u:${v.user}:rX ${path}
+                '') v.paths)
+              )
+            );
+          postStop = ''
+            ${setfacl} --mask -Rx u:${v.user} /
+          '';
+          } ) backupsWithUser;
 }
