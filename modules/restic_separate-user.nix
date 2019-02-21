@@ -77,7 +77,7 @@ in
               ''}
               ${setfacl} --mask -Rm u:${v.user}:rX ${concatStringsSep " " v.paths}
             '';
-            postStop = ''
+            postStart = ''
               ${setfacl} --mask -Rx u:${v.user} /
             '';
             } ) augmentedBackups;
