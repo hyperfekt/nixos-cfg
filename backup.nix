@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, user, ... }:
 with lib;
 let
   backups = {
@@ -11,6 +11,8 @@ let
       repository = "s3:https://s3.eu-central-1.wasabisys.com/hyperfekt-personal-backup";
       passwordFile = "/cfg/secrets/restic-normal-backup.pass";
       s3CredentialsFile = "/cfg/secrets/wasabi-bismuth-restic.env";
+      # the default home (where restic locates the cache directory) for system users is /var/empty
+      extraBackupArgs = [ "--cache-dir /home/${user}/.cache/restic" ];
     };
   };
   backupsWithUser = mapAttrs (n: v: v // {user = "restic-${n}"; }) backups;
@@ -51,10 +53,9 @@ in
                 '' ] ++ optional (!(isNull v.s3CredentialsFile)) [
                   (makeAccessible "u:${v.user}" v.s3CredentialsFile) ''
                   ${setfacl} --mask -m u:${v.user}:r ${v.s3CredentialsFile}
-                '' ] ++
-                (map (path: ''
-                  ${setfacl} --mask -Rm u:${v.user}:rX ${path}
-                '') v.paths)
+                '' ] ++ [ ''
+                  ${setfacl} --mask -Rm u:${v.user}:rX ${concatStringsSep " " v.paths}
+                '' ]
               )
             );
           postStop = ''
