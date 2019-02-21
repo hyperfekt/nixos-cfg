@@ -5,7 +5,7 @@ let
   compose = foldr dot id;
   withUser = n: v: { user = "restic-${n}"; };
   cacheDir = n: "/var/tmp/restic-${n}";
-  withCache = n: v: { extraBackupArgs = [ "--cache-dir ${cacheDir n}" ]; };
+  withCache = n: v: { extraBackupArgs = v.extraBackupArgs ++ [ "--cache-dir ${cacheDir n}" ]; };
   extendAttrs = f: mapAttrs (n: v: v // (f n v));
   rename = mapAttrs' (n: v: nameValuePair "generated-${n}" v);
   augmentedBackups = compose ((map extendAttrs [ withUser withCache ]) ++ [ rename ]) config.resticSeparateUser.backups;
