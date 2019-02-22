@@ -78,7 +78,12 @@ in
               ${setfacl} --mask -Rm u:${v.user}:rX ${concatStringsSep " " v.paths}
             '';
             postStart = ''
-              ${setfacl} --mask -Rx u:${v.user} /
+              # supressing errors from the removal of files that races with their permissions being removed
+              set +e
+              stderr=$(${setfacl} --mask -Rx u:${v.user} ${concatStringsSep " " v.paths} 2>&1 >/dev/null)
+              status=$?
+              set -e
+              [[ $status -eq 0 ]] || ${pkgs.gnugrep}/bin/grep "No such file or directory" <<< "$stderr" || ${pkgs.coreutils}/bin/tee <&2 <<< "$stderr" && exit $status
             '';
             } ) augmentedBackups;
     };
