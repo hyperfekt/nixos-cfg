@@ -96,6 +96,10 @@ in
     fd
     hyperfine
     bat
+    fzf #todo: enable
+    asciinema
+    pv
+    du-dust
     /* polyglot */ (callPackage (builtins.fetchurl https://raw.githubusercontent.com/hyperfekt/nixpkgs/init_polyglot/pkgs/development/tools/misc/polyglot/default.nix) {})
   ];
 
