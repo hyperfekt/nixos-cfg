@@ -1,6 +1,9 @@
-{user, pkgs, ...}:
+{user, pkgs, unstable, ...}:
 {
-  environment.systemPackages = [ pkgs.git ];
+  environment.systemPackages = [
+    pkgs.git
+    pkgs.gitAndTools.transcrypt
+  ];
 
   home-manager.users.${user}.programs.git = {
     enable = true;
