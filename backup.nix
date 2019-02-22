@@ -8,6 +8,7 @@
       ];
       extraBackupArgs = [ "--exclude-file ${pkgs.writeText "restic-normal-excludes" ''
         */baloo/index*
+        */.cache
       ''}" ];
       timerConfig.OnCalendar = "*:0/5";
       repository = "s3:https://s3.eu-central-1.wasabisys.com/hyperfekt-personal-backup";
