@@ -52,7 +52,8 @@ in
       ./zram.nix
     ];
 
-  system.autoUpgrade.enable = true;
+  # kills networking for some reason?
+  # system.autoUpgrade.enable = true;
 
   nix.autoOptimiseStore = true;
   nix.gc.automatic = true;
