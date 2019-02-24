@@ -1,8 +1,9 @@
 {user, pkgs, unstable, ...}:
 {
-  environment.systemPackages = [
-    pkgs.git
-    pkgs.gitAndTools.transcrypt
+  environment.systemPackages = with pkgs; [
+    git
+    gitAndTools.hub
+    (pkgs.callPackage (/home/adrian/code/nixpkgs-transcrypt/pkgs/applications/version-management/git-and-tools/transcrypt/default.nix) {})
   ];
 
   home-manager.users.${user}.programs.git = {
