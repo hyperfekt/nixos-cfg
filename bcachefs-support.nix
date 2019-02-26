@@ -6,8 +6,8 @@ let
     modDirVersion = "4.20.0";
     src = pkgs.fetchgit {
       url = "https://evilpiepirate.org/git/bcachefs.git";
-      rev = "ea43593a9d07594e8a14eb44f9373c238a981612";
-      sha256 = "0jiwb7wxhx6hnlv15rj4hcljrr44cddm5hb8sf4bfhln70zw5apf";
+      rev = "2d1aed5672ad55f86544cb5352560d5395012136";
+      sha256 = "0b4swx0z36y4gglkjwxn3x1q0wknv4k2lbprhbing3ms0d45z9f2";
     };
   }; };
   kernelPackages = pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor kernel);
