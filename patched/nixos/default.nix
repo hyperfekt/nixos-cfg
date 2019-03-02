@@ -15,7 +15,7 @@ let
     name = "nixpkgs-patched";
     src = builtins.storePath <nixos>;
     unpackPhase = "cp -r --no-preserve=mode $src/. .";
-    inherit patches;
+    patches = [ ./nix-instantiate_find-file_nixpkgs-to-nixos.patch ] ++ patches;
     patchFlags = [ "-p1" "--merge" ];
     dontBuild = true;
     installPhase = ''
