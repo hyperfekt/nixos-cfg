@@ -103,6 +103,10 @@ in
     asciinema
     pv
     du-dust
+    parallel
+    gdb
+    wget
+    nix-diff
     /* polyglot */ (callPackage (builtins.fetchurl https://raw.githubusercontent.com/hyperfekt/nixpkgs/init_polyglot/pkgs/development/tools/misc/polyglot/default.nix) {})
   ];
 
