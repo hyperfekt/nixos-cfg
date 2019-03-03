@@ -3,7 +3,6 @@ let
   user = "adrian";
 
   unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
-
 in
 {
   _module.args.user = user;
@@ -50,6 +49,8 @@ in
       ./ssd.nix
       # Compress memory in RAM.
       ./zram.nix
+      # Add shell aliases.
+      ./aliases.nix
     ];
 
   # kills networking for some reason?
