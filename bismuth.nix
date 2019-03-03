@@ -51,6 +51,8 @@ in
       ./zram.nix
       # Add shell aliases.
       ./aliases.nix
+      # Make bcachefs unlock work.
+      ./pam_defaults.nix
     ];
 
   # kills networking for some reason?
