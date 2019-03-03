@@ -23,6 +23,8 @@ let
         ] ++ (map idToDrv [
           "rust-lang.rust"
           "vadimcn.vscode-lldb"
+          "pnp.polacode"
+          "eamodio.gitlens"
         ])
       ;
     };
@@ -30,18 +32,24 @@ in
   {
     environment.systemPackages = [ custom-vscode ];
 
+    environment.variables."EDITOR" = "${custom-vscode}/bin/code";
+
     home-manager.users.${user}.programs.vscode = {
       enable = true;
 
       userSettings = {
         "update.channel" = "none";
         "extensions.autoUpdate" = false;
+        "editor.wordWrap"= "on";
         "files.insertFinalNewline" = true;
         "editor.renderFinalNewline" = false;
         "files.trimTrailingWhitespace" = true;
         "[plaintext]" = {
           "files.insertFinalNewline" = false;
           "editor.renderFinalNewline" = true;
+          "files.trimTrailingWhitespace" = false;
+        };
+        "[markdown]" = {
           "files.trimTrailingWhitespace" = false;
         };
         "telemetry.enableTelemetry" = false;
