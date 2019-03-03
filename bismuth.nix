@@ -53,6 +53,8 @@ in
       ./aliases.nix
       # Make bcachefs unlock work.
       ./pam_defaults.nix
+      # use newer Nix version
+      ./newnix.nix
     ];
 
   # kills networking for some reason?
@@ -62,6 +64,11 @@ in
   nix.gc.automatic = true;
   nix.buildCores = 0; # redundant in 19.03
   nix.maxJobs = 16;
+
+  nix.binaryCaches = [
+    "https://cache.cowsay.pw"
+    "https://cache.nixos.org"
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
