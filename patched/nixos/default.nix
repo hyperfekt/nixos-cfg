@@ -14,7 +14,10 @@ let
   patched-nixpkgs = pkgs.stdenv.mkDerivation {
     name = "nixpkgs-patched";
     src = builtins.storePath <nixos>;
-    unpackPhase = "cp -r --no-preserve=mode $src/. .";
+    unpackPhase = ''
+      cp -r $src/. .
+      chmod -R u=rwX,g=rX,o=rX * # necessary because store hashes include the execute bit
+    '';
     patches = [ ./nix-instantiate_find-file_nixpkgs-to-nixos.patch ] ++ patches;
     patchFlags = [ "-p1" "--merge" ];
     dontBuild = true;
