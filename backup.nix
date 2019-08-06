@@ -9,6 +9,7 @@
       exclude = ''
         baloo/index*
         .cache
+        .local/share/Steam/steamapps/common
       '';
       timerConfig.OnCalendar = "*:0/5";
       repository = "s3:https://s3.eu-central-1.wasabisys.com/hyperfekt-personal-backup";
