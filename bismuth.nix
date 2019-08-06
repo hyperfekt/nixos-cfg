@@ -75,7 +75,6 @@ in
 
   nix.autoOptimiseStore = true;
   nix.gc.automatic = true;
-  nix.buildCores = 0; # redundant in 19.03
   nix.maxJobs = 16;
 
   # use --option binary-caches https://cache.nixos.org to rebuild if any of these goes down
