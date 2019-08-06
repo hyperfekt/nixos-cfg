@@ -78,10 +78,17 @@ in
   nix.buildCores = 0; # redundant in 19.03
   nix.maxJobs = 16;
 
+  # use --option binary-caches https://cache.nixos.org to rebuild if any of these goes down
   nix.binaryCaches = [
-    "https://cache.cowsay.pw"
+    "http://aseipp-nix-cache.global.ssl.fastly.net/"
     "https://cache.nixos.org"
   ];
+  nix.extraOptions = ''
+    # fall back to other caches if one is down
+    fallback = true
+    # prevent future rebuilds from breaking if one is violently aborted (breaks bcachefs)
+    # sync-before-registering = true
+  '';
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
