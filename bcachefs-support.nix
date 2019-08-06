@@ -1,40 +1,36 @@
-{ pkgs, unstable, ...}:
-let
-  fetchimport = args: ((import <nixos/nixpkgs> {config={};}).fetchurl args).outPath;
-  kernel = unstable.linux_testing_bcachefs.override { argsOverride = {
-    version = "4.20.2019.02.20";
-    modDirVersion = "4.20.0";
-    src = pkgs.fetchgit {
-      url = "https://evilpiepirate.org/git/bcachefs.git";
-      rev = "ea43593a9d07594e8a14eb44f9373c238a981612";
-      sha256 = "0jiwb7wxhx6hnlv15rj4hcljrr44cddm5hb8sf4bfhln70zw5apf";
-    };
-  }; };
-  kernelPackages = pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor kernel);
-  tools = unstable.bcachefs-tools.overrideAttrs (oldAttrs: rec {
-    name = "${oldAttrs.pname}-${version}";
-    src = pkgs.fetchgit {
-      url = "https://evilpiepirate.org/git/bcachefs-tools.git";
-      rev = "17c5215c1c542dd7b6b4f891a0da16d8c98e0591";
-      sha256 = "1zm2lnvijfmz483m2nhxz1rhk7ghgh0c450nyiwi6wa7lc1y3339";
-    };
-    version = "2019-02-09";
-  });
-in
-  {
-    disabledModules = [
-      "tasks/filesystems/bcachefs.nix"
-    ];
-    imports = [
-      (fetchimport {
-        url = https://raw.githubusercontent.com/hyperfekt/nixpkgs/bcachefs-packageoptions/nixos/modules/tasks/filesystems/bcachefs.nix;
-        sha256 = "0p6kkh99282s90xjc4zir08ngvmf1lyzv841cqmisqsfryxqjli5";
-      })
-    ];
+{ pkgs, unstable, lib, ...}:
+{
+  disabledModules = [ "tasks/filesystems/zfs.nix" ];
 
-    boot.bcachefs.toolPackage = tools;
-    boot.kernelPackages = pkgs.lib.mkForce kernelPackages;
-    boot.zfs.enableUnstable = true;
+  options.security.pam.services = with lib; mkOption {
+    type = types.loaOf (types.submodule {
+      config.text = mkDefault (mkAfter "session required pam_keyinit.so force revoke");
+    });
+  };
+
+  config = {
+    nixpkgs.overlays = [ (
+      self: super: {
+        linux_testing_bcachefs = unstable.linux_testing_bcachefs.override { argsOverride = {
+          modDirVersion = "5.1.0";
+          version = "5.1.2019.07.23";
+          src = pkgs.fetchgit {
+            url = "https://evilpiepirate.org/git/bcachefs.git";
+            rev = "d541578796b99f78decb7c22e8e173d3192234bf";
+            sha256 = "0rvpzhr9b1afzms7yhj3dlv8ahpcv177naivnc1v55nzp4v4mg2z";
+          };
+        }; };
+        bcachefs-tools = unstable.bcachefs-tools.overrideAttrs (oldAttrs: {
+          version = "2019-07-13";
+          src = pkgs.fetchgit {
+            url = "https://evilpiepirate.org/git/bcachefs-tools.git";
+            rev = "692eadd6ca9b45f12971126b326b6a89d7117e67";
+            sha256 = "0d2kqy5p89qjrk38iqfk9zsh14c2x40d21kic9kcybdhalfq5q31";
+          };
+        } );
+      }
+    ) ];
+
     boot.supportedFilesystems = [ "bcachefs" ];
     boot.kernelPatches = [ {
       name = "bcachefs-acl";
@@ -43,4 +39,5 @@ in
         BCACHEFS_POSIX_ACL y
       '';
     } ];
-  }
+  };
+}

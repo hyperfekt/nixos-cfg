@@ -51,8 +51,6 @@ in
       ./zram.nix
       # Add shell aliases.
       ./aliases.nix
-      # Make bcachefs unlock work.
-      ./pam_defaults.nix
       # use newer Nix version
       ./newnix.nix
     ];
