@@ -2,10 +2,19 @@
 let
   user = "adrian";
 
-  unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
+  sources = import ./nix/sources.nix;
+
+  pkgs = import sources.nixpkgs { config = { allowUnfree = true;}; };
+
+  unstable = import sources.nixpkgs-unstable { config = { allowUnfree = true;}; };
+
+  niv = import sources.niv {};
+
 in
 {
   _module.args.user = user;
+  _module.args.sources = sources;
+  _module.args.pkgs = pkgs;
   _module.args.unstable = unstable;
 
   imports =

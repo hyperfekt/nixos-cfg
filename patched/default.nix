@@ -1,1 +1,1 @@
-import "${<nixos>}/default.nix"
+import (import ../nix/sources.nix).nixpkgs

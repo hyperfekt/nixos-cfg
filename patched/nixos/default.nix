@@ -1,10 +1,12 @@
-{ configuration ? import "${<nixos>}/nixos/lib/from-env.nix" "NIXOS_CONFIG" <nixos-config>
+{ configuration ? import ((import ../../nix/sources.nix).nixpkgs + /nixos/lib/from-env.nix) "NIXOS_CONFIG" <nixos-config>
 , system ? builtins.currentSystem
 }:
 
 let
 
-  pkgs = import <nixos> {};
+  nixpkgs = (import ../../nix/sources.nix).nixpkgs;
+
+  pkgs = import nixpkgs {};
 
   patches = (pkgs.lib.evalModules {
     modules = [ configuration ];
@@ -13,24 +15,25 @@ let
 
   patched-nixpkgs = pkgs.stdenv.mkDerivation {
     name = "nixpkgs-patched";
-    src = builtins.storePath <nixos>;
+    src = nixpkgs;
     unpackPhase = ''
       cp -r $src/. .
       chmod -R u=rwX,g=rX,o=rX * # necessary because store hashes include the execute bit
     '';
-    patches = [ ./nix-instantiate_find-file_nixpkgs-to-nixos.patch ] ++ patches;
+    inherit patches;
     patchFlags = [ "-p1" "--merge" ];
     dontBuild = true;
     installPhase = ''
-      shopt -s dotglob nullglob
+      shopt -s nullglob
       mkdir -p $out
       rm env-vars
+      mv .version $out/.version
       mv * $out
     '';
     fixupPhase = "true";
   };
 
-  eval = import <nixos/nixos/lib/eval-config.nix> {
+  eval = import "${patched-nixpkgs}/nixos/lib/eval-config.nix" {
     inherit system;
     modules = [ configuration ];
     baseModules = import "${patched-nixpkgs}/nixos/modules/module-list.nix";
