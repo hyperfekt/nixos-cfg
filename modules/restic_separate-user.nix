@@ -1,4 +1,4 @@
-{ pkgs, lib, config, options, ... }:
+{ pkgs, lib, config, options, unstable, ... }:
 with lib;
 let
   dot = f: g: x: f (g x);
@@ -8,9 +8,10 @@ let
   cacheDir = n: "/var/tmp/restic-${n}";
   withExclude = n: v: { extraBackupArgs = v.extraBackupArgs ++ [ "--exclude-file ${excludeFiles.${n}}" ]; };
   withCache = n: v: { extraBackupArgs = v.extraBackupArgs ++ [ "--cache-dir ${cacheDir n}" ]; };
+  quiet = n: v: { extraBackupArgs = v.extraBackupArgs ++ [ "--quiet" ]; };
   extendAttrs = f: mapAttrs (n: v: v // (f n v));
   renamedBackups = mapAttrs' (n: v: nameValuePair "generated-${n}" v) config.resticSeparateUser.backups;
-  augmentedBackups = compose (map extendAttrs [ withUser withCache withExclude ]) renamedBackups;
+  augmentedBackups = compose (map extendAttrs [ withUser withCache withExclude quiet ]) renamedBackups;
 in
 {
   options.resticSeparateUser.backups = mkOption {
@@ -70,7 +71,7 @@ in
     systemd.services =
       let
         setfacl = "${pkgs.acl.bin}/bin/setfacl --mask";
-        fd = "${pkgs.fd}/bin/fd --hidden --no-ignore";
+        fd = "${unstable.fd}/bin/fd --hidden --no-ignore";
         parallel = "${pkgs.parallel}/bin/parallel --pipe";
         # make sure to run before any other setfacl calls as they are destructive
         giveAccess = entity: target: ''
