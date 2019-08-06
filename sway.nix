@@ -1,10 +1,7 @@
-{ pkgs, unstable, ... }:
+{ pkgs, unstable, config, ... }:
 {
-  imports = [ <nixos-unstable/nixos/modules/programs/sway-beta.nix> ];
-
-  programs.sway-beta = {
+  programs.sway = {
     enable = true;
-    package = unstable.sway-beta;
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland
       # needs qt5.qtwayland in systemPackages
@@ -14,6 +11,14 @@
       # use this if they aren't displayed properly:
       export _JAVA_AWT_WM_NONREPARENTING=1
     '';
-    extraPackages = [ pkgs.qt5.qtwayland ];
+    extraPackages = with pkgs; [
+      qt5.qtwayland
+      swaylock
+      swayidle
+      xwayland
+      dmenu
+    ];
   };
+
+  services.illum.enable = true;
 }
