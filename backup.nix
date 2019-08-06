@@ -18,6 +18,8 @@
   };
 
   home-manager.users.${user}.xdg.configFile."baloofilerc".text = ''
+    [Basic Settings]
+    Indexing-Enabled=false
     [General]
     dbVersion=2
     exclude filters=${pkgs.lib.concatStringsSep "," ([
