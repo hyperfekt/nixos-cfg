@@ -9,14 +9,5 @@ with lib;
     description = "patch files to apply to the nixpkgs tree";
   };
 
-  config = {
-    nix.nixPath = [ "nixpkgs=${toString ../patched}" ] ++ options.nix.nixPath.default;
-    nixpkgs.overlays = [
-      (self: super: {
-        parted = super.parted.overrideAttrs (oldAttrs: rec {
-          doCheck = false;
-        });
-      })
-    ];
-  };
+  config.nix.nixPath = [ "nixpkgs=${toString ../patched}" ];
 }

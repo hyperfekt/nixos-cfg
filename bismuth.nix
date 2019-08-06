@@ -64,6 +64,12 @@ in
       ./newnix.nix
     ];
 
+  nix.nixPath = [ "nixos-config=${toString ./bismuth.nix}" ];
+  setupScript = ''
+    NIX_PATH=nixpkgs=/cfg/patched:nixos-config=/cfg/bismuth.nix
+    nixos-rebuild switch
+  '';
+
   # kills networking for some reason?
   # system.autoUpgrade.enable = true;
 
