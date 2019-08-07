@@ -11,6 +11,7 @@ let
   patches = (pkgs.lib.evalModules {
     modules = [ configuration ];
     check = false;
+    args = { inherit pkgs; };
   }).config.patches;
 
   patched-nixpkgs = pkgs.stdenv.mkDerivation {

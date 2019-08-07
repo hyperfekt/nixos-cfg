@@ -4,9 +4,7 @@ let
 
   sources = import ./nix/sources.nix;
 
-  pkgs = import sources.nixpkgs { config = { allowUnfree = true;}; };
-
-  unstable = import sources.nixpkgs-unstable { config = { allowUnfree = true;}; };
+  unstable = import sources.nixpkgs-unstable { config = config.nixpkgs-alt.config; };
 
   niv = import sources.niv {};
 
@@ -14,7 +12,6 @@ in
 {
   _module.args.user = user;
   _module.args.sources = sources;
-  _module.args.pkgs = pkgs;
   _module.args.unstable = unstable;
 
   imports =

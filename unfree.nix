@@ -1,6 +1,6 @@
 {user, ...}:
 {
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs-alt.config.allowUnfree = true;
 
   hardware.enableRedistributableFirmware = true;
 
