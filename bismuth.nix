@@ -14,52 +14,52 @@ in
   _module.args.sources = sources;
   _module.args.unstable = unstable;
 
-  imports =
-    [ # Add custom modules.
-      ./modules/all-modules.nix
-      # Include the results of the hardware scan.
-      ./bismuth/hardware-configuration.nix
-      # Enable bcachefs root support.
-      ./bcachefs-support.nix
-      # Backups!
-      ./backup.nix
-      # Pull in Mozilla Rust Overlay and install Rust & Carnix.
-      ./rust.nix
-      # Set German keyboard layout.
-      ./layout_de.nix
-      # Allow unfree packages.
-      ./unfree.nix
-      # Install Visual Studio Code with extensions.
-      ./vscode.nix
-      # Activate home-manager for use as a NixOS module.
-      ./home-manager.nix
-      # Set the fish shell as default.
-      ./fish.nix
-      # Install and configure git.
-      ./git.nix
-      # Install Spotify.
-      ./spotify.nix
-      # Use KDE desktop environment.
-      ./kde.nix
-      # Use the Sway window manager.
-      ./sway.nix
-      # Make Ubuntu the default font.
-      ./ubuntu-font.nix
-      # Enable aptX Bluetooth.
-      ./bluetooth.nix
-      # Activate powersaving measures.
-      ./powersave.nix
-      # Enable hardware video decoding acceleration for Intel graphics.
-      ./video-acceleration.nix
-      # Enable SSD-specific tweaks.
-      ./ssd.nix
-      # Compress memory in RAM.
-      ./zram.nix
-      # Add shell aliases.
-      ./aliases.nix
-      # use newer Nix version
-      ./newnix.nix
-    ];
+  imports = [
+    # Add custom modules.
+    ./modules/all-modules.nix
+    # Include the results of the hardware scan.
+    ./bismuth/hardware-configuration.nix
+    # Enable bcachefs root support.
+    ./bcachefs-support.nix
+    # Backups!
+    ./backup.nix
+    # Pull in Mozilla Rust Overlay and install Rust & Carnix.
+    ./rust.nix
+    # Set German keyboard layout.
+    ./layout_de.nix
+    # Allow unfree packages.
+    ./unfree.nix
+    # Install Visual Studio Code with extensions.
+    ./vscode.nix
+    # Activate home-manager for use as a NixOS module.
+    ./home-manager.nix
+    # Set the fish shell as default.
+    ./fish.nix
+    # Install and configure git.
+    ./git.nix
+    # Install Spotify.
+    ./spotify.nix
+    # Use KDE desktop environment.
+    ./kde.nix
+    # Use the Sway window manager.
+    ./sway.nix
+    # Make Ubuntu the default font.
+    ./ubuntu-font.nix
+    # Enable aptX Bluetooth.
+    ./bluetooth.nix
+    # Activate powersaving measures.
+    ./powersave.nix
+    # Enable hardware video decoding acceleration for Intel graphics.
+    ./video-acceleration.nix
+    # Enable SSD-specific tweaks.
+    ./ssd.nix
+    # Compress memory in RAM.
+    ./zram.nix
+    # Add shell aliases.
+    ./aliases.nix
+    # use newer Nix version
+    ./newnix.nix
+  ];
 
   nix.nixPath = [ "nixos-config=${toString ./bismuth.nix}" ];
   setupScript = ''
