@@ -59,6 +59,7 @@ in
     ./zram.nix
     # Add shell aliases.
     ./aliases.nix
+    ./redshift.nix
     ./steam.nix
   ];
 
