@@ -48,8 +48,7 @@ with rec
   fetchzip = { url, sha256 }@attrs: pkgs.fetchzip attrs;
 
   hasNixpkgsPath = (builtins.tryEval <nixpkgs>).success;
-  hasThisAsNixpkgsPath = true;
-  # temporary patch until niv#113 is solved  (builtins.tryEval <nixpkgs>).success && <nixpkgs> == ./.;
+  hasThisAsNixpkgsPath = (builtins.tryEval <nixpkgs>).success && <nixpkgs> == ./.;
 
   sources = builtins.fromJSON (builtins.readFile ./sources.json);
 

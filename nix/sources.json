@@ -31,7 +31,7 @@
         "repo": "nixpkgs-channels",
         "rev": "ad34e9e24751030e09747da73635450c32769112",
         "sha256": "194s99w8m7pyibg17xs5rzh131cl83nq34g1bc9dgzj446swpzg9",
-        "type": "tarball",
+        "type": "builtin-tarball",
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/ad34e9e24751030e09747da73635450c32769112.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
