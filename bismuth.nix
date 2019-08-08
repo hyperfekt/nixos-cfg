@@ -53,6 +53,8 @@ in
     ./video-acceleration.nix
     # Enable SSD-specific tweaks.
     ./ssd.nix
+    # Enable platter-specific tweaks.
+    ./hdd.nix
     # Compress memory in RAM.
     ./zram.nix
     # Add shell aliases.
@@ -92,9 +94,6 @@ in
 
   networking.hostName = "bismuth"; # Define your hostname.
   networking.networkmanager.enable = true;
-
-  # Enable hard drive active protection system.
-  services.hdapsd.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
