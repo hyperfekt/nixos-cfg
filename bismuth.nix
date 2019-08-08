@@ -59,6 +59,7 @@ in
     ./zram.nix
     # Add shell aliases.
     ./aliases.nix
+    ./steam.nix
   ];
 
   nix.nixPath = [ "nixos-config=${toString ./bismuth.nix}" ];
