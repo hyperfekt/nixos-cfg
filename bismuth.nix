@@ -59,8 +59,6 @@ in
     ./zram.nix
     # Add shell aliases.
     ./aliases.nix
-    # use newer Nix version
-    ./newnix.nix
   ];
 
   nix.nixPath = [ "nixos-config=${toString ./bismuth.nix}" ];
