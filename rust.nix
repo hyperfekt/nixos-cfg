@@ -42,4 +42,18 @@ in
     "rust-lang.rust"
     "bungcip.better-toml"
   ];
+
+  vscode.packagedExtensions = [ (
+    unstable.vscode-utils.buildVscodeExtension rec {
+      name = "vadimcn.vscode-lldb-x86_64-linux";
+      src = pkgs.requireFile {
+        url = "https://github.com/vadimcn/vscode-lldb/releases/latest/download/vscode-lldb-x86_64-linux.vsix";
+        name = "vadimcn-vscode-lldb-x86_64-linux.zip";
+        sha256 = "186f8f6r2awiqaz0gcknm4zdf8vxfxmzxg64l0z8is6q307gr90m";
+      };
+      vscodeExtUniqueId = name;
+      dontPatchELF = false;
+      dontStrip = false;
+    }
+  ) ];
 }
