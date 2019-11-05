@@ -1,18 +1,29 @@
-{user, pkgs, unstable, ...}:
+{user, pkgs, unstable, lib, config, ...}:
+with lib;
 {
-  environment.systemPackages = with pkgs; [
-    git
-    gitAndTools.hub
-    (pkgs.callPackage (/home/adrian/code/nixpkgs-transcrypt/pkgs/applications/version-management/git-and-tools/transcrypt/default.nix) {})
-  ];
+  options.git.excludes = mkOption {
+    type = types.listOf types.string;
+    default = [];
+  };
 
-  home-manager.users.${user}.programs.git = {
-    enable = true;
-    userName = "hyperfekt";
-    userEmail = "git@hyperfekt.net";
-    extraConfig = {
-      credential = {
-        helper = "cache --timeout=7200";
+  config = {
+    environment.systemPackages = with pkgs; [
+      git
+      gitAndTools.hub
+      unstable.gitAndTools.transcrypt
+    ];
+
+    home-manager.users.${user}.programs.git = {
+      enable = true;
+      userName = "hyperfekt";
+      userEmail = "git@hyperfekt.net";
+      extraConfig = {
+        credential = {
+          helper = "cache --timeout=7200";
+        };
+        core = {
+          excludesfile = "${pkgs.writeText "git-global.ignore" (concatStringsSep "\n" config.git.excludes)}";
+        };
       };
     };
   };
