@@ -1,24 +1,18 @@
 { user, pkgs, unstable, ... }:
 let
-  nixpkgs-mozilla = (import (import ./nix/sources.nix).nixpkgs {}).fetchFromGitHub {
-    owner = "mozilla";
-    repo = "nixpkgs-mozilla";
-    # 2019-01-28
-    rev = "da76271a3c3d4f14359c9258f31d014b29f413a2";
-    sha256 = "11qi27n43g1xl844p2yfxfygdjij2zifbqwa6yxkzy2sff2npsbf";
-  };
+  nixShellWrapper = command: pkgs.writeShellScript "${command}_nix-shell_wrapper.sh" ''
+    argv=( "$@" )
+    exec nix-shell --pure --run "${command} ''${argv[*]}"
+  '';
 
-  rust-mozilla = import "${nixpkgs-mozilla}/rust-overlay.nix";
-  rust-src-mozilla = import "${nixpkgs-mozilla}/rust-src-overlay.nix";
-
-  rust = pkgs.latest.rustChannels.nightly.rust;
-  #rust = (pkgs.rustChannelOf { date = "2019-03-13"; channel = "nightly"; }).rust;
+  nixShellRustFmt = nixShellWrapper "rustfmt";
+  nixShellRLS = pkgs.writeShellScript "rls_with-sysroot_nix-shell_wrapper.sh" ''
+    export LD_LIBRARY_PATH=$(${nixShellWrapper "rustc"} --print sysroot)/lib:$LD_LIBRARY_PATH
+    source ${nixShellWrapper "rls"}
+  '';
 in
 {
-  nixpkgs.overlays = [ rust-mozilla rust-src-mozilla ];
-
   environment.systemPackages = [
-    rust
     unstable.carnix
     ( unstable.rr.overrideAttrs (oldAttrs: rec {
       version = "2019-08-03";
@@ -34,8 +28,18 @@ in
     } ) )
   ];
 
-  home-manager.users.${user}.programs.vscode.userSettings = {
+  boot.kernel.sysctl."kernel.perf_event_paranoid" = 1; # required for rr recording
+
+  vscode.settings = {
     "rust-client.disableRustup" = true;
+    "rust-client.rlsPath" = "${nixShellRLS}";
+    "rust.rustfmt_path" = "${nixShellRustFmt}";
+    "rust.clippy_preference" = "on";
     "lldb.adapterType" = "native";
   };
+
+  vscode.pulledExtensions = [
+    "rust-lang.rust"
+    "bungcip.better-toml"
+  ];
 }
